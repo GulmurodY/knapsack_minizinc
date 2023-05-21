@@ -1,0 +1,22 @@
+int:n;
+array[1..n] of int: w;%  respective weights of items
+array[1..n] of int: v;%  values of all items
+array[1..n] of int: q;%  maximal quantity of each item 
+int: W; % knapsack maximum capacity
+
+array[1..n] of var int: x; % quantitiies of respective items
+
+constraint sum([w[i] * x[i] | i in 1..n]) <= W;
+
+constraint forall(i in 1..n) (x[i] >= 0 /\ x[i] <= q[i]);
+
+var int: total_value = sum([v[i] * x[i] | i in 1..n]); 
+
+solve maximize total_value; 
+
+include "knapsack_data.dzn";
+
+output [
+    "total: " ++ show(total_value) ++"\n"
+    ++ show(x)
+];
